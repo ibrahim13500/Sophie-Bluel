@@ -20,7 +20,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 
-/* HTML5 display-role reset for older browsers */
+/* HTML5 display-role reset pour older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
@@ -30,8 +30,8 @@ body {
 	line-height: 1;
 	background: #fffef8;
 	max-width: 1140px;
-	margin:auto;
-	font-family: 'Work Sans' ;
+	margin: auto;
+	font-family: 'Work Sans';
 	font-size: 14px;
 }
 
@@ -58,7 +58,11 @@ table {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0;
+	margin: 80px 0 50px 0;
+}
+
+header.connected {
+	margin-top: 20px;
 }
 
 section {
@@ -76,7 +80,7 @@ h1 {
 
 h1 > span {
 	font-family: 'Work Sans';
-	font-size:10px;
+	font-size: 10px;
 	letter-spacing: 0.1em;
 }
 
@@ -211,6 +215,7 @@ footer nav ul {
 	justify-content: center;
 	gap: 10px;
 	margin-bottom: 30px;
+	margin-top: 20px;
 }
 
 .filter-btn {
@@ -312,139 +317,332 @@ input[type="submit"] {
 }
 
 .admin-panel {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 59px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: black;
-	color: white;
-	font-family: "Work Sans";
-	z-index: 1000;
-}
-
-.admin-panel p {
-	margin-left: 10px;
-}
-
-/* Styles pour le bouton "Modifier" et le conteneur de l'en-tête des projets */
-.works-header {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-}
-
-.works-title {
-    display: block;
-    align-items: center;
+    position: absolute; /* Utilisation de position absolute pour éviter les limitations de max-width */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Assure que le panneau occupe toute la largeur de la fenêtre */
+    height: 59px;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    font-family: "Work Sans";
+    z-index: 1000;
+    box-sizing: border-box; /* Assure que padding et border sont inclus dans la largeur totale */
+    margin-bottom: 20px; /* Ajoute un espace en bas du panneau */
 }
 
-#editButton {
-	margin-left: 10px;
-	padding: 5px 10px;
-	background-color: transparent;
-	color: black;
-	cursor: pointer;
-	font-size: 16px;
-	font-family: 'Work Sans', sans-serif;
-	display: flex;
-	align-items: center;
+.admin-panel i {
+    margin-right: 10px;
 }
 
-#editButton i {
-	margin-right: 5px;
+.content {
+    padding-top: 80px; /* Augmenter le padding-top pour éviter que le contenu ne soit caché par l'admin panel */
 }
 
 
-
-#editButton {
-	display: none;
-}
-
-.connected #editButton {
-	display: flex;
-}
-.connected {
-    margin-top: 80px;
-    cursor: pointer;
-}
-.modify-works {
-    font-size: 0.9rem;
-    margin-left: 8px;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
-}
 /* MODAL */
 
 .modal {
-	position: fixed;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.3);
-	z-index: 1000;
-  }
-  
-  .modal-wrapper {
-	overflow: auto;
-	width: 80%; /* Réduire la largeur de la modal */
-	max-width: 400px; /* Définir une largeur maximale */
-	max-height: 80%; /* Définir une hauteur maximale */
-	padding: 30px;
-	background: #f1f1f1;
-	border-radius: 10px;
-	box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
-	animation: slideFromBottom 300ms both 50ms;
-  }
-  
-.modal-wrapper__close {
-    text-align: right;
-}
-
-.modal-wrapper__close button {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.modal-wrapper__content {
+    position: fixed;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    animation: fadeIn 300ms both;
+    z-index: 1000; /* Assure que la modale est au-dessus de tout */
 }
 
-.modal-wrapper__content figure {
-    margin: 10px;
-    position: relative;
+.modal-wrapper {
+    overflow: auto;
+    width: 630px;
+    max-width: calc(100vw - 30px);
+    max-height: calc(100vh - 30px);
+    min-height: 200px;
+    padding: 30px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+    animation: slideFromBottom 300ms both 50ms;
+    z-index: 1001; /* Assure que le contenu de la modale est au-dessus du fond */
 }
 
-.modal-wrapper__content img {
-    max-width: 100px;
-    height: auto;
-}
-
-.delete-button {
+  .modal-wrapper__head {
+	text-align: center;
+  }
+  .modal-wrapper__head h2 {
+	margin-block: 10px 50px;
+  }
+  
+  .modal-wrapper__close {
+	text-align: right;
+  }
+  
+  .js-modal-close {
+	border: none;
+	font-size: 1.2rem;
+  }
+  
+  .js-modal-close:hover {
+	cursor: pointer;
+	color: #555;
+  }
+  
+  .modal-wrapper__content {
+	margin: 30px auto;
+	width: 75%;
+	padding-bottom: 50px;
+	border-bottom: 1px solid #b3b3b3;
+  }
+  
+  .view {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-column-gap: 10px;
+	grid-row-gap: 10px;
+  }
+  
+  .edit {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+  }
+  
+  .modal-wrapper__content figure {
+	display: flex;
+	height: 100px;
+	position: relative;
+  }
+  .modal-wrapper__content figure img:not(.delete-button) {
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+  }
+  
+  .modal-wrapper__footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  }
+  
+  .add-photo {
+	display: flex;
+	justify-content: center;
+	border: none;
+	padding: 8px 40px;
+	border-radius: 20px;
+	width: 237px;
+	background: #1d6154;
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
+	margin-bottom: 10px;
+  }
+  
+  .valid {
+	display: flex;
+	justify-content: center;
+	border: none;
+	padding: 8px 40px;
+	border-radius: 20px;
+	width: 237px;
+	background: #1d6154;
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
+	margin-bottom: 10px;
+  }
+  .delete-button {
+    width: 17px;
+    height: 17px;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    right: 7px;
+    top: 7px;
     cursor: pointer;
+    background-color: black;
+    border-radius: 3px;
+    display: flex; /* Utilisation de flexbox pour centrer */
 }
 
-.add-photo {
-    background: #007BFF;
+.fa-trash-can {
     color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
+    font-size: 0.7rem;
+
 }
+
+ 
+
+  @keyframes fadeIn {
+	from {
+	  opacity: 0;
+	}
+	to {
+	  opacity: 1;
+	}
+  }
+  
+  @keyframes slideFromBottom {
+	from {
+	  transform: translateY(50px);
+	}
+	to {
+	  transform: translateY(0px);
+	}
+  }
+  
+  /* EDITVIEW */
+  
+  .upload-area {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	background: #e8f1f6;
+	border-radius: 3px;
+	height: 169px;
+  }
+  .upload-area img {
+	display: flex;
+	height: 169px;
+	margin-block: 10px;
+  }
+  
+  .upload-area .uploaded {
+	height: 169px;
+  }
+  
+  .upload-area .get-file {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	background: #cbd6dc;
+	width: 173px;
+	height: 36px;
+	border-radius: 50px;
+	box-sizing: border-box;
+	border: none;
+	margin-bottom: 10px;
+	font-size: 1rem;
+	cursor: pointer;
+  }
+  
+  .upload-area .get-file:hover {
+	background: #306685;
+  }
+  
+  .upload-area label {
+	background: #cbd6dc;
+	color: #306685;
+	padding: 12px 30px;
+	font-size: 0.9rem;
+	border-radius: 25px;
+	font-family: "Work sans";
+	cursor: pointer;
+  }
+  
+  .upload-area label:hover {
+	background: #b2bcc2;
+  }
+  
+  .upload-area p {
+	display: flex;
+	margin-bottom: 20px;
+	font-size: 0.7rem;
+	margin-top: 8px;
+	font-family: "Work sans";
+  }
+  
+  .upload-config {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	justify-content: center;
+	font-family: "Work sans";
+  }
+  
+  #uploadNewWork > * {
+	text-align: center;
+  }
+  
+  #uploadNewWork h2 {
+	margin-bottom: 20px;
+  }
+  
+  .upload-config {
+	text-align: left;
+	display: flex;
+	flex-direction: column;
+  }
+  
+  .upload-config input,
+  .upload-config select {
+	padding: 18px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  }
+  .upload-config label {
+	margin: 2em 0 1em 0;
+  }
+  
+  input[type="file"] {
+	display: none;
+  }
+  
+  .arrow-go-back {
+	position: absolute;
+	cursor: pointer;
+  }
+  
+
+.admin-panel .fa-pen-to-square {
+    color: white;
+    margin-left: 10px; /* ajustez cette valeur selon vos besoins */
+}
+
+/* Modifier */
+#editButton {
+    color: black;
+    font-size: 15px;
+    cursor: pointer;
+    margin-left: 14px;
+}
+
+
+
+/* Centrage du titre Mes Projets */
+.works-title {
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+}
+
+
+/* Margin du header pour éviter chevauchement avec l'admin panel */
+header.connected {
+    margin-top: 80px;
+}
+
+/* Réduction du margin-top du header sur la page de login */
+#login header {
+    margin-top: 20px;
+}
+.fa-image{
+font-size: 5rem;
+color: rgba(185, 197, 204, 1);
+}
+.hidden{
+	display: none;
+}
+
+ 
+
+

@@ -1,138 +1,137 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Sophie Bluel - Architecte d'intérieur</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
+        rel="stylesheet">
     <meta name="description" content="">
     <link rel="stylesheet" href="./assets/style.css">
     <script src="./assets/js/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
-<!-- Ajout du panneau d'administration -->
-<div class="admin-panel">
-    <p>Mode édition</p>
-</div>
-<header>
-    <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-    <nav>
-        <ul>
-            <li><a class="navlink" href="./">projets</a></li>
-            <li><a class="navlink" href="./#contact">contact</a></li>
-            <li><a class="navlink" id="logMode" href="./login.html">login</a></li>
-            <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-        </ul>
-    </nav>
-</header>
-<main>
-    <section id="introduction">
-        <figure>
-            <img src="./assets/images/sophie-bluel.png" alt="">
-        </figure>
-        <article>
-            <h2>Designer d'espace</h2>
-            <p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
-            <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
-            <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
-        </article>
-    </section>
-    <section id="portfolio">
-        <h2 class="works-title">Mes Projets
-        <a id="editButton" style="display: none;"><i class="works-titles fa-regular fa-pen-to-square"></i> Modifier</a>
-        <div class="filters">
-        </h2>
-        </div>
-        <div class="gallery">
-            
-        </div>
-    </section>
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Vous avez un projet ? Discutons-en !</p>
-        <form action="#" method="post">
-            <label for="name">Nom</label>
-            <input type="text" name="name" id="name">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email">
-            <label for="message">Message</label>
-            <textarea name="message" id="message" cols="30" rows="10"></textarea>
-            <input type="submit" value="Envoyer">
-        </form>
-    </section>
-</main>
-<footer>
-    <nav>
-        <ul>
-            <li>Mentions Légales</li>
-        </ul>
-    </nav>
-</footer>
 
-<!-- Modal -->
-<aside id="modal" class="modal" role="dialog" aria-modal="false" aria-labelledby="modal-title" style="display: none;">
-  <div class="modal-wrapper js-modal-stop">
-    <img class="arrow-go-back" src="./assets/images/arrow-left-solid.svg" style="display: none;">
-    <div class="modal-wrapper__close">
-      <button class="js-modal-close" aria-label="Fermer la boite modale">✖</button>
+<body>
+    <!-- Ajout du panneau d'administration -->
+    <div class="admin-panel">
+        <i class="fa-regular fa-pen-to-square"></i>
+        <p>Mode édition</p>
     </div>
-    <form id="uploadNewWork" method="post">
-      <div class="modal-wrapper__head">
-        <h2 id="modal-title">Galerie Photo</h2>
-      </div>
-      <div class="modal-wrapper__content view">
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/abajour-tahina1651286843956.png" alt="Abajour Tahina">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/appartement-paris-v1651287270508.png" alt="Appartement Paris V">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/restaurant-sushisen-londres1651287319271.png" alt="Restaurant Sushisen - Londres">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/la-balisiere1651287350102.png" alt="Villa “La Balisiere” - Port Louis">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/structures-thermopolis1651287380258.png" alt="Structures Thermopolis">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/appartement-paris-x1651287435459.png" alt="Appartement Paris X">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/le-coteau-cassis1651287469876.png" alt="Pavillon “Le coteau” - Cassis">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/villa-ferneze1651287511604.png" alt="Villa Ferneze - Isola d’Elba">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/appartement-paris-xviii1651287541053.png" alt="Appartement Paris XVIII">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/bar-lullaby-paris1651287567130.png" alt="Bar “Lullaby” - Paris">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-        <figure>
-          <img src="https://sophie-bluel-api-aa2d8b8c980b.herokuapp.com/images/hotel-first-arte-new-delhi1651287605585.png" alt="Hotel First Arte - New Delhi">
-          <img src="./assets/icons/bin.svg" class="delete-button">
-        </figure>
-      </div>
-      <div class="modal-wrapper__footer">
-        <button class="add-photo">Ajouter une photo</button>
-      </div>
-    </form>
-  </div>
-</aside>
+    <header>
+        <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+        <nav>
+            <ul>
+                <li><a class="navlink" href="./">projets</a></li>
+                <li><a class="navlink" href="./#contact">contact</a></li>
+                <li><a class="navlink" id="logMode" href="./login.html">login</a></li>
+                <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="introduction">
+            <figure>
+                <img src="./assets/images/sophie-bluel.png" alt="Sophie Bluel">
+            </figure>
+            <article>
+                <h2>Designer d'espace</h2>
+                <p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison
+                    finale du chantier.</p>
+                <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les
+                    couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du
+                    chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+                <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG,
+                    décorateur(trice)</p>
+            </article>
+        </section>
+        <section id="portfolio">
+            <h2 class="works-title">Mes Projets
+                <a id="editButton" class="edit-btn" href="#"><i class="fa-regular fa-pen-to-square"></i> Modifier</a>
+            </h2>
+            <div class="filters">
+                <!-- Filtres pour les projets -->
+            </div>
+            <div class="gallery">
+                <!-- Les projets seront ajoutés ici dynamiquement -->
+            </div>
+        </section>
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Vous avez un projet ? Discutons-en !</p>
+            <form action="#" method="post">
+                <label for="name">Nom</label>
+                <input type="text" name="name" id="name">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email">
+                <label for="message">Message</label>
+                <textarea name="message" id="message" cols="30" rows="10"></textarea>
+                <input type="submit" value="Envoyer">
+            </form>
+        </section>
+    </main>
+    <footer>
+        <nav>
+            <ul>
+                <li>Mentions Légales</li>
+            </ul>
+        </nav>
+    </footer>
+
+    <!-- Modal -->
+    <aside id="modal" class="modal" role="dialog" aria-modal="false" aria-labelledby="modal-title"
+        style="display: none;">
+        <div id="first-modal" class="modal-wrapper js-modal-stop">
+            <img class="arrow-go-back" src="./assets/images/arrow-left-solid.svg" style="display: none;">
+            <div class="modal-wrapper__close">
+                <button class="js-modal-close" aria-label="Fermer la boite modale">✖</button>
+            </div>
+            <div class="uploadNewWork">
+                <div class="modal-wrapper__head">
+                    <h2 id="modal-title">Galerie Photo</h2>
+                </div>
+                <div class="modal-wrapper__content view">
+                    <!-- Les figures seront ajoutées ici dynamiquement -->
+                </div>
+                <div class="modal-wrapper__footer">
+                    <button class="add-photo">Ajouter une photo</button>
+                </div>
+            </div>
+        </div>
+        <div id="second-modal" class="modal-wrapper js-modal-stop hidden"><i class="fa-solid fa-arrow-left arrow-go-back"></i>
+            <div class="modal-wrapper__close">
+                <button class="js-modal-close" aria-label="Fermer la boite modale">✖</button>
+            </div>
+            <form id="uploadNewWork" method="post">
+                <div class="modal-wrapper__head">
+                    <h2>Ajout Photo</h2>
+                </div>
+                <div class="modal-wrapper__content edit">
+                    <div class="upload-area">
+                        <i class="fa-regular fa-image"></i>
+                        <label for="getFile">+ Ajouter Photo</label>
+                        <input type="file" id="getFile" name="image">
+                       <img src="#" alt="">
+                        <p>jpg, png : 4mo max</p>
+                    </div>
+                    <div class="upload-config">
+                        <label>Titre</label>
+                        <input type="text" name="title" id="title">
+                        <label for="categories">Catégorie</label>
+                        <select id="categories" name="categories">
+                           
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-wrapper__footer">
+                    <button type="submit" class="valid" style="background: rgb(167, 167, 167);">Valider</button>
+                </div>
+            </form>
+        </div>
+    </aside>
 </body>
+
 </html>
