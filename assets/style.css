@@ -360,10 +360,10 @@ input[type="submit"] {
 
 .modal-wrapper {
     overflow: auto;
-    width: 630px;
+    width: 560px;
     max-width: calc(100vw - 30px);
-    max-height: calc(100vh - 30px);
-    min-height: 200px;
+    max-height: calc(100vh - 27px);
+    min-height: 100px;
     padding: 30px;
     background: #f1f1f1;
     border-radius: 10px;
@@ -385,7 +385,7 @@ input[type="submit"] {
   
   .js-modal-close {
 	border: none;
-	font-size: 1.2rem;
+	font-size: 1.3rem;
   }
   
   .js-modal-close:hover {
@@ -458,7 +458,7 @@ input[type="submit"] {
 	cursor: pointer;
 	margin-bottom: 10px;
   }
-  .delete-button {
+  .modal-wrapper__content .delete-button {
     width: 17px;
     height: 17px;
     position: absolute;
@@ -468,12 +468,14 @@ input[type="submit"] {
     background-color: black;
     border-radius: 3px;
     display: flex; /* Utilisation de flexbox pour centrer */
+    align-items: center; /* Centrage vertical */
+    justify-content: center; /* Centrage horizontal */
 }
 
-.fa-trash-can {
+.modal-wrapper__content .fa-trash-can {
     color: white;
     font-size: 0.7rem;
-
+    line-height: 1; /* S'assurer que la hauteur de ligne ne perturbe pas le centrage */
 }
 
  
@@ -615,8 +617,6 @@ input[type="submit"] {
     margin-left: 14px;
 }
 
-
-
 /* Centrage du titre Mes Projets */
 .works-title {
     text-align: center;
@@ -642,7 +642,26 @@ color: rgba(185, 197, 204, 1);
 .hidden{
 	display: none;
 }
-
- 
+.fa-arrow-left{
+	font-size: 25px;
+}
+.delete-preview-button {
+    background-color:transparent;
+    color: black; /* Couleur du texte blanc */
+    border: none; /* Pas de bordure */
+    padding: 5px 10px; /* Remplissage intérieur */
+    font-size: 17px; /* Taille de police */
+    cursor: pointer; /* Curseur pointer pour indiquer que c'est cliquable */
+    display: none; /* Par défaut caché */
+    position: relative; /* Position absolue par rapport à son parent */
+    top: 1px; /* Positionnement haut */
+	align-items: center;
+}
+#imagePreview {
+    display: none; /* Caché par défaut */
+    max-width: 100%; /* Taille maximale pour s'adapter au conteneur */
+    max-height: 200px; /* Hauteur maximale, ajustez selon vos besoins */
+    margin-top: 10px; /* Espacement en haut */
+}
 
 

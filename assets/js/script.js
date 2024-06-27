@@ -8,6 +8,7 @@ const editButton = document.getElementById("editButton");
 const modal = document.getElementById("modal");
 const closeButton = document.querySelector(".js-modal-close");
 const uploadNewWork = document.querySelector(".uploadNewWork");
+const token = localStorage.getItem("authToken"); // Récupère le token depuis le localStorage
 
 // ** Déclaration des variables ** //
 let allWorks = [];
@@ -83,28 +84,43 @@ function createWorkElement(work) {
     titleElement.textContent = work.title;
     workElement.appendChild(titleElement);
 
-    if (isAdminLoggedIn()) {
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Supprimer";
-        deleteButton.classList.add("delete-button");
-        deleteButton.addEventListener("click", async () => {
-            try {
-                await deleteImage(work.id);
-                allWorks = allWorks.filter(item => item.id !== work.id);
-                workElement.remove();
-                // Supprimer également l'élément de la modale
-                const modalFigure = document.getElementById(`work-${work.id}`);
-                if (modalFigure) {
-                    modalFigure.remove();
-                }
-            } catch (error) {
-                console.error("Erreur lors de la suppression de l'image:", error);
-            }
-        });
-        workElement.appendChild(deleteButton);
-    }
-
     return workElement;
+}
+
+// ** Fonction pour créer un élément de figure pour la modal ** //
+function createModalFigure(work) {
+    const figure = document.createElement('figure');
+    figure.id = `work-${work.id}`;
+    figure.dataset.id = work.id;
+
+    const img = document.createElement('img');
+    img.src = work.imageUrl;
+    img.alt = work.title;
+
+    const deleteButtonContainer = document.createElement('div');
+    deleteButtonContainer.className = 'delete-button-container';
+
+    const deleteButton = document.createElement('i');
+    deleteButton.className = 'fa-solid fa-trash-can delete-button';
+    deleteButton.addEventListener('click', async () => {
+        try {
+            await deleteImage(work.id);
+            allWorks = allWorks.filter(item => item.id !== work.id);
+            figure.remove();
+            const galleryFigure = document.querySelector(`.work-item[data-id='${work.id}']`);
+            if (galleryFigure) {
+                galleryFigure.remove();
+            }
+        } catch (error) {
+            console.error();
+        }
+    });
+
+    deleteButtonContainer.appendChild(deleteButton);
+    figure.appendChild(img);
+    figure.appendChild(deleteButtonContainer);
+
+    return figure;
 }
 
 // ** Fonction pour afficher les catégories sous forme de boutons de filtre ** //
@@ -266,24 +282,21 @@ function createModalFigure(work) {
     return figure;
 }
 
-// ** Fonction pour supprimer une image via l'API ** //
-async function deleteImage(id) {
+// ** Supprime une image via l'API ** //
+async function deleteImage(workId) {
     try {
-        const token = localStorage.getItem("authToken"); // Récupère le token depuis le localStorage
-        const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+        const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` // Ajoute le token d'authentification
-            },
+                "Authorization": `Bearer ${token}`
+            }
         });
+
         if (!response.ok) {
             throw new Error(`Erreur ${response.status} - ${response.statusText}`);
         }
-        const data = await response.json(); // Attend la réponse JSON seulement si elle existe
-        console.log("Le delete a réussi:", data); // Affiche les données si disponibles
     } catch (error) {
-        console.error();
+        console.error('Erreur lors de la suppression de l\'image:', error);
         throw error;
     }
 }
@@ -317,16 +330,17 @@ function displayAddModal() {
 // Appeler la fonction pour initialiser les événements
 displayAddModal();
 
-//**Faire la prévisualisation de l'image */
-const prevImg = document.querySelector(".edit img");
-const inputFile = document.querySelector(".edit input");
-const labelFile = document.querySelector(".edit label");
-const iconeFile = document.querySelector(".edit .fa-image"); // Ajouté le point pour sélectionner la classe correctement
-const pFile = document.querySelector(".edit p");
+// Sélectionner les éléments nécessaires pour la prévisualisation d'image
+const prevImg = document.getElementById("imagePreview");
+const inputFile = document.getElementById("getFile");
+const labelFile = document.querySelector(".upload-area label");
+const iconeFile = document.querySelector(".upload-area .fa-image");
+const pFile = document.querySelector(".upload-area p");
+let deletePreviewButton; // Déclarer une variable globale pour le bouton de suppression
 
-//**Vérifier que les éléments existent avant d'ajouter l'écouteur d'événement */
+// Vérifier que tous les éléments nécessaires existent avant d'ajouter les écouteurs d'événements
 if (inputFile && prevImg && labelFile && iconeFile && pFile) {
-    //**Visualiser les changements sur inputFile */
+    // Ajouter un écouteur d'événement sur le changement de fichier
     inputFile.addEventListener("change", () => {
         const file = inputFile.files[0];
         console.log(file);
@@ -334,15 +348,57 @@ if (inputFile && prevImg && labelFile && iconeFile && pFile) {
             const reader = new FileReader();
             reader.onload = function (e) {
                 prevImg.src = e.target.result;
-                prevImg.style.display = "flex";
+                prevImg.style.display = "block";
                 labelFile.style.display = "none";
                 iconeFile.style.display = "none";
                 pFile.style.display = "none";
+                addDeleteButton(); // Ajouter le bouton de suppression une fois que l'image est chargée
+                console.log("Image chargée, bouton de suppression ajouté.");
             };
             reader.readAsDataURL(file);
         }
     });
 }
+
+function addDeleteButton() {
+    // Vérifier si le bouton de suppression n'a pas déjà été créé
+    if (!deletePreviewButton) {
+        deletePreviewButton = document.createElement("button");
+        deletePreviewButton.textContent = "X";
+        deletePreviewButton.classList.add("delete-preview-button");
+
+        // Ajouter un écouteur d'événement sur le bouton de suppression
+        deletePreviewButton.addEventListener("click", () => {
+            // Réinitialiser les éléments d'aperçu d'image
+            prevImg.src = "";
+            prevImg.style.display = "none";
+            labelFile.style.display = "block";
+            iconeFile.style.display = "block";
+            pFile.style.display = "block";
+
+            // Réinitialiser l'élément input de type file
+            inputFile.value = "";
+
+            // Masquer à nouveau le bouton de suppression
+            deletePreviewButton.style.display = "none";
+
+            // Supprimer le bouton de suppression du DOM
+            deletePreviewButton.remove();
+            deletePreviewButton = null; // Réinitialiser la variable globale
+        });
+
+        // Insérer le bouton de suppression dans la zone de téléchargement
+        document.querySelector(".upload-area").appendChild(deletePreviewButton);
+
+        // Afficher le bouton de suppression
+        deletePreviewButton.style.display = "block";
+    } else {
+        // Si le bouton de suppression existe déjà (ce qui ne devrait pas arriver normalement), on le rend visible
+        deletePreviewButton.style.display = "block";
+    }
+}
+
+
 
 // ** Créer une liste de catégories dans l'input select de la deuxième modal ** //
 async function displayModalCategories() {
@@ -362,47 +418,104 @@ async function displayModalCategories() {
         console.error('Erreur lors de l\'affichage des catégories dans la modal:', error);
     }
 }
-
 // Appeler la fonction pour initialiser les catégories dans la modal
 displayModalCategories();
+    // Votre implémentation de la fonction ici
 
+// Fonction pour générer des éléments dans la modal
+// ** Fonction pour générer des éléments dans la modal ** //
+function genererElementsModal(travaux) {
+    const modalWrapper = document.querySelector('.modal-wrapper');
+    modalWrapper.innerHTML = ''; // Vider le contenu de la modal avant d'ajouter les figures
 
-//**POST ajouter une image */
+    travaux.forEach(work => {
+        const figure = createModalFigure(work);
+        modalWrapper.appendChild(figure);
+    });
+}
 
-const form = document.querySelector("#second-modal form");
-const title = document.querySelector("#second-modal #title");
-const category = document.querySelector("#second-modal #categories"); // Correction ici pour sélectionner correctement l'élément de catégorie
+// ** Fonction pour obtenir les travaux ** //
+async function getWorks() {
+    try {
+        const worksData = await getData("works");
+        allWorks = worksData;
+        displayWorks();
+    } catch (error) {
+        console.error("Erreur lors de la récupération des travaux :", error);
+    }
+}
 
-form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+// ** Fonction pour ajouter des travaux ** //
+async function ajoutTravaux() {
+    const form = document.querySelector("#uploadNewWork");
 
-    const formData = {
-        title: title.value,
-        categoryId: category.value,
-        imageUrl: prevImg.src,
-        category: {
-            id: category.value,
-            name: category.options[category.selectedIndex].textContent,
-        },
-    };
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-    fetch(`http://localhost:5678/api/works`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData), // Utilisation correcte de formData ici
+        const title = document.querySelector("#title").value;
+        const image = document.querySelector("#getFile").files[0];
+        const categorie = document.querySelector("#categories").value;
 
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            console.log("Voici l'image ajoutée", data);
-            displayAddModal(); // Assurez-vous que cette fonction est définie
-            displayCategories(); // Assurez-vous que cette fonction est définie
-        })
-        
-});
+        // Validation des champs
+        if (!title || !image || !categorie) {
+            alert("Tous les champs doivent être remplis !");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("image", image);
+        formData.append("title", title);
+        formData.append("category", categorie);
+
+        try {
+            const response = await fetch(`http://localhost:5678/api/works`, {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                const newWork = await response.json(); // Supposons que la réponse contient le nouveau travail ajouté
+                allWorks.push(newWork); // Ajouter le nouveau travail à la liste existante
+                displayWorks(); // Mettre à jour la galerie avec tous les travaux
+                fillModalWithWorks(); // Mettre à jour la modal avec tous les travaux
+                closeModal(); // Fermer la modal
+            } else {
+                throw new Error("Erreur du serveur");
+            }
+        } catch (error) {
+            console.error("Erreur lors de l'envoi du formulaire :", error);
+        }
+    });
+}
+
+// Appelez la fonction pour attacher l'événement au chargement du script
+ajoutTravaux();
+
+// ** Fonction pour fermer la modal ** //
+function closeModal() {
+    if (modal) {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+        document.querySelector("#uploadNewWork").reset(); // Réinitialiser le formulaire
+        const prevImg = document.getElementById("imagePreview");
+        const labelFile = document.querySelector(".upload-area label");
+        const iconeFile = document.querySelector(".upload-area .fa-image");
+        const pFile = document.querySelector(".upload-area p");
+        if (prevImg) prevImg.style.display = "none";
+        if (labelFile) labelFile.style.display = "block";
+        if (iconeFile) iconeFile.style.display = "block";
+        if (pFile) pFile.style.display = "block";
+        if (deletePreviewButton) {
+            deletePreviewButton.remove(); // Supprimer le bouton de suppression s'il existe
+            deletePreviewButton = null;
+        }
+    }
+}
+
 
 function verifFormCompleted() {
     const buttonValidForm = document.querySelector(".modal-wrapper__footer .valid");
@@ -425,3 +538,4 @@ function verifFormCompleted() {
 }
 
 verifFormCompleted();
+
